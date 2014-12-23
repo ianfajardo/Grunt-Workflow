@@ -17,6 +17,7 @@ module.exports = function(grunt) {
 			}
 		},
 
+		//javascript file minification
 		uglify:{
 			my_target:{
 				files: {
@@ -29,6 +30,7 @@ module.exports = function(grunt) {
 			js: ['scripts/scripts.min.js']
 		},
 
+		//jshint, allow tasks to go on with error
 		jshint: {
 			options: {
 				force: true
@@ -53,13 +55,13 @@ module.exports = function(grunt) {
 		  	livereload: true,
 		  },
 		  all: {
-			files: ['index.html', 'style.css'],
+			files: ['index.html', 'style.css', 'Gruntfile.js'],
 			options: {
 			  livereload: true
 			}
 		  },
 		  css: {
-		    files: ['public/scss/*.scss'],
+		    files: ['sass/*.scss'],
 		    tasks: ['compass'],
 		  },
 		  scripts:{
@@ -113,7 +115,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['notify_hooks','dom_munger']);
 
 	//run livereloading process watch
-	grunt.registerTask('live', ['notify_hooks', 'express', 'watch']);
+	grunt.registerTask('live', ['notify_hooks', 'scripts' , 'express', 'watch']);
 
 	//run jshint, clean minified script, write new minified script to file
 	grunt.registerTask('scripts', ['jshint', 'clean:js' , 'uglify']);

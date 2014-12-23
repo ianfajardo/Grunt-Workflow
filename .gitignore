@@ -43,6 +43,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Unnecessary Dependencies
 node_modules
 growlnotify.com
 growlnotify.exe
