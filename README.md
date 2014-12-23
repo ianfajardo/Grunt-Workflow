@@ -1,6 +1,6 @@
 Grunt-Workflow
 ==============
-<br /><br />
+
 Dependencies<br />
 -grunt-contrib-compass<br />
 -grunt-contrib-jshint<br />
