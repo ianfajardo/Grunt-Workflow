@@ -37,50 +37,44 @@ module.exports = function(grunt) {
 			}
 		},
 
-		//express livereload server
-		express: {
-			all:{
-			  options: {
-				port: 9000,
-				hostname: "0.0.0.0",
-				bases:[__dirname],
-				livereload:true
-			  }
-		  }
-		},
-
 		//watch task runner for live changes
-		watch: {
-		  options: {
-		  	livereload: true,
+		watch: {  
+		  gruntfile: {
+				files: ['Gruntfile.js'],
+				tasks: ['jshint'],
+				options: {
+					spawn: false,
+					livereload: true
+				}
 		  },
-		  all: {
-			files: ['index.html', 'style.css', 'Gruntfile.js'],
-			options: {
-			  livereload: true
-			}
-		  },
-		  css: {
-		    files: ['sass/*.scss'],
-		    tasks: ['compass'],
+		  css: { 
+				files: ['sass/*.scss'],
+				tasks: ['compass'],
 		  },
 		  scripts:{
-		  	files:['scripts/*.js'],
-		  	tasks: ['jshint', 'clean:js' ,'uglify'],
+				files:['scripts/*.js'],
+				tasks: ['jshint', 'clean:js' ,'uglify'],
+				options: {
+					spawn: false,
+					livereload: true
+				}
+		  },
+		  html: {
+		  	files: ['index.html', 'scripts/*.js'],
 		  	options: {
-		  		spawn: false,
+					livereload: true
 		  	}
 		  }
 		},
 
 		//notification system for livereloading changes
 		notify_hooks: {
-		    options: {
-		      enabled: true,
-		      max_jshint_notifications: 5,
-		      success: true,
-		      duration: 3
-		    }
+			options: {
+			  enabled: true,
+			  max_jshint_notifications: 5,
+			  success: true,
+			  duration: 3
+			}
 		  },
 
 		dom_munger: {
@@ -95,12 +89,15 @@ module.exports = function(grunt) {
 		},
 	});
 
+grunt.event.on('watch', function(action, filepath, target) {
+  grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
+});
+
 
 	/* Grunt Task Load
 	==================================================*/
 	grunt.loadNpmTasks('grunt-dom-munger');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-express');
 	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -111,12 +108,12 @@ module.exports = function(grunt) {
 
 	/* Grunt Task Terminal Tasks
 	==================================================*/
-	grunt.task.run('notify_hooks'); 
+	//grunt.task.run('notify_hooks'); 
 
 	grunt.registerTask('default', ['notify_hooks','dom_munger']);
 
 	//run livereloading process watch
-	grunt.registerTask('live', ['notify_hooks', 'scripts' , 'express', 'watch']);
+	grunt.registerTask('live', ['notify_hooks', 'scripts' , 'watch']);
 
 	//run jshint, clean minified script, write new minified script to file
 	grunt.registerTask('scripts', ['jshint', 'clean:js' , 'uglify']);
